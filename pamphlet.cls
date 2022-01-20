@@ -18,20 +18,21 @@ author=,%
 creator=,%
 }
 \ProcessOptionsX\relax
-\LoadClass[a4paper,12pt]{article}
+\LoadClass[a4paper]{article}
 %%% /OPTIONS
 
 
 %%% PACKAGES
 \RequirePackage[english]{babel}
+\RequirePackage{enumitem}
 \RequirePackage{fontspec}
 \RequirePackage{framed}
-\RequirePackage{geometry}
+\RequirePackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=2cm]{geometry}
 \RequirePackage{hyperref}
 \RequirePackage[small,sf,bf,compact]{titlesec}
 \RequirePackage{xcolor}
 \RequirePackage{xargs}
-\RequirePackage[fontsize=10pt]{fontsize}
+\RequirePackage[fontsize=17pt]{fontsize}
 %%% /PACKAGES
 
 %%% COLORS
@@ -62,11 +63,9 @@ UprightFont=Lexend-SemiBold,
 
 \tolerance=666
 
-\tolerance=666
-
-\newcommand{\GIGANTIC}{\changefontsize{48pt}}
-\newcommand{\Gigantic}{\changefontsize{36pt}}
-\newcommand{\gigantic}{\changefontsize{28pt}}
+\newcommand{\GIGANTIC}{\changefontsize[48pt]{48pt}}
+\newcommand{\Gigantic}{\changefontsize[32pt]{32pt}}
+\newcommand{\gigantic}{\changefontsize[24pt]{24pt}}
 
 \renewcommand{\familydefault}{\rmdefault}
 
@@ -85,7 +84,9 @@ UprightFont=Lexend-SemiBold,
 
 \titleformat{\subsubsection}[hang]
 {\subsubsectionnumberstyle}{\thesubsubsection}{1em}{\sectiontitlestyle}
-    
+
+\titlespacing{\section}{}{0pt}{0pt}
+\titlespacing{\subsection}{}{0pt}{.5em}
 %%% /SECTIONS
 
 %%% META
@@ -96,6 +97,23 @@ UprightFont=Lexend-SemiBold,
 \newcommand*{\thetitle}{\@title}
 \makeatother
 %%% /META
+
+\newenvironment{boldquote}{%
+    \null\noindent\hspace{.1\textwidth}%
+    \begin{minipage}[t]{.8\textwidth}\sffamily\large\bfseries
+}{%
+    \end{minipage}
+    \vskip\baselineskip
+}
+\newenvironment{boldishquote}{%
+    \null\noindent\hspace{.1\textwidth}%
+    \begin{minipage}[t]{.8\textwidth}\sffamily\large\upshape
+}{%
+    \end{minipage}
+    \vskip\baselineskip
+}
+
+\setlist[description]{topsep=0pt,leftmargin=2em,rightmargin=0pt,labelsep=5pt,itemsep=0pt}
 
 
 %%% HEADER/FOOTER
