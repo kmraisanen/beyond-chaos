@@ -1,4 +1,9 @@
-# Beyond Chaos!
-## An Introduction to Anarchism
+# Beyond Chaos! - An Introduction to Anarchism
 
-Swedish translation of Dawn Ray'd's pamphlet as `.tex`, `.txt`, and `.pdf`.
+This is a Swedish translation of Dawn Ray'd's pamphlet on anarchism as `.tex`, `.md`, `.txt` and `.pdf`.
+
+## Building
+
+
+
+
