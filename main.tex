@@ -1,0 +1,300 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{pamphlet}[2022/01/16 Style for novels based on memoir]
+
+%%% OPTIONS
+\RequirePackage{xkeyval}
+
+\DeclareOptionX{title}{\def\doctitle{#1}}
+\DeclareOptionX{subtitle}{\def\docsubtitle{#1}}
+\DeclareOptionX{author}{\def\docauthor{#1}}
+\DeclareOption{draft}{\def\isdraft{isdraft}}
+\DeclareOptionX{primarycolor}{\def\primarycolor{#1}}
+\DeclareOptionX{secondarycolor}{\def\secondarycolor{#1}}
+\DeclareOptionX{thirdcolor}{\def\thirdcolor{#1}}
+\DeclareOptionX{chaptertitle}{\def\chaptertitle{#1}}
+\DeclareOptionX{parttitle}{\def\parttitle{#1}}
+\ExecuteOptionsX{%
+primarycolor=DarkGreen,%
+secondarycolor=Pink,%
+thirdcolor=LightGreen,%
+chaptertitle=Chapter,%
+parttitle=Part,%
+title=The\ Thin\ Girl,%
+subtitle=,%
+author=K.M.\ Räisänen%
+}
+\ProcessOptionsX\relax
+\LoadClass[a5paper,openany,twoside]{book}
+%%% /OPTIONS
+
+
+%%% PACKAGES
+\RequirePackage[english]{babel}
+\RequirePackage{etoolbox}
+\RequirePackage{fancyhdr}
+\RequirePackage{fontspec,lipsum}
+\RequirePackage{framed}
+\RequirePackage{geometry}
+\RequirePackage{hyperref}
+\RequirePackage{subfiles}
+\RequirePackage{tocloft}
+\RequirePackage[small,sf,bf,compact]{titlesec}
+\RequirePackage{xcolor}
+%%% /PACKAGES
+
+
+%%% BOOL
+\providebool{isdraft}
+\newcommand{\ifnovel}[1]{%
+    \ifdef{\isnovel}{#1}{}%
+}
+\newcommand{\ifnotnovel}[1]{%
+    \ifdef{\isnovel}{}{#1}%
+}
+\newcommand{\ifdraft}[1]{%
+	\ifdef{\isdraft}{#1}{}%
+}
+\newcommand{\ifnotdraft}[1]{%
+	\ifdef{\isdraft}{}{#1}%
+}
+\newcommand{\markdraft}[2][\thedate]{%
+	\ifdraft{%
+		\marginpar{\color{gray}\tiny#1}
+		\emph{\color{lightgray}#2}%
+	}%
+}
+%%% /BOOL
+
+%%% COLORS
+\definecolor{DarkGreen}{HTML}{3D997A}
+\definecolor{Pink}{HTML}{E57398}
+\definecolor{DarkPink}{HTML}{CC6686}
+\definecolor{MediumGreen}{HTML}{6BB39B}
+\definecolor{Yellow}{HTML}{FFE5CC}
+\definecolor{LightGreen}{HTML}{8FCCB8}
+\definecolor{Beige}{HTML}{D5C4BF}
+\definecolor{Orange}{HTML}{CC8B7A}
+\definecolor{White}{HTML}{FFFFFF}
+\definecolor{Black}{HTML}{0A0005}
+\definecolor{Eggshell}{HTML}{FFEDE6}
+
+
+\colorlet{Accent}{\primarycolor}
+\colorlet{SecondAccent}{\secondarycolor}
+\colorlet{ThirdAccent}{\thirdcolor}
+
+\newcommand\colorrule[2]{%
+	\noindent%
+	{\color{#1} \rule{\linewidth}{#2}}
+}
+%%% /COLORS
+
+
+%%% FONTS
+\defaultfontfeatures{Ligatures=TeX}
+\setromanfont[
+Path=fonts/,
+ItalicFont=CaeciliaLTPro56RomanIt,
+BoldFont=CaeciliaLTPro75Bold,
+BoldItalicFont=CaeciliaLTPro76BoldIt
+]{CaeciliaLTPro55Roman}
+
+\setsansfont[
+Path=fonts/,
+ItalicFont=NeueHaasDisplayRomanItalic,
+BoldFont=NeueHaasDisplayBlack,
+BoldItalicFont=NeueHaasDisplayBold,
+UprightFont=NeueHaasDisplayRoman,
+]{NeueHaasDisplayMedium}
+
+
+\tolerance=666
+
+\newcommand{\GIGANTIC}{\fontsize{48pt}{56pt}\selectfont}
+\newcommand{\Gigantic}{\fontsize{36pt}{44pt}\selectfont}
+\newcommand{\gigantic}{\fontsize{28pt}{36pt}\selectfont}
+
+\renewcommand{\familydefault}{\rmdefault}
+\newcommand{\partnamestyle}{\normalfont\sffamily\Large\upshape}
+\newcommand{\parttitlestyle}{\normalfont\sffamily\Gigantic\bfseries}
+
+\newcommand{\chapternamestyle}{\normalfont\sffamily\large\upshape}
+\newcommand{\chaptertitlestyle}{\normalfont\sffamily\gigantic\bfseries}
+
+\newcommand{\sectionnumberstyle}{\normalfont\sffamily\Large\itshape}
+\newcommand{\subsectionnumberstyle}{\normalfont\sffamily\large\itshape}
+\newcommand{\subsubsectionnumberstyle}{\normalfont\sffamily\itshape}
+\newcommand{\sectiontitlestyle}{\bfseries}
+
+%%%%%% TOC
+\cftpagenumbersoff{part}
+\renewcommand\cftpartafterpnum{
+    \\[.5ex]
+    \colorrule{SecondAccent}{.3cm}
+}
+\renewcommand{\cfttoctitlefont}{\sffamily\gigantic\bfseries}
+\renewcommand{\cftpartfont}{\sffamily\Large\bfseries}
+\renewcommand{\cftchapfont}{\normalfont\sffamily\upshape}
+\renewcommand{\cftchappagefont}{\normalfont\sffamily\upshape}
+\renewcommand{\cftsecfont}{\normalfont\sffamily\footnotesize}
+\renewcommand{\cftsecpagefont}{\normalfont\sffamily\footnotesize}
+
+\renewcommand{\cftchapleader}{\cftdotfill{\cftchapdotsep}}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+\tocloftpagestyle{empty}
+\setcounter{tocdepth}{1}
+%%%%%% /TOC
+
+%%% /FONTS
+
+%%% SECTIONS
+\newcommand{\parttitlename}{Part}
+
+\titleformat{\part}[display]
+    {\partnamestyle}
+    {%
+        \vskip\baselineskip
+        \colorrule{SecondAccent}{.5cm}\\[1ex]
+        \parttitlename\ \thepart%
+    }
+    {-.8ex}
+    {\parttitlestyle}
+    [\colorrule{SecondAccent}{.8cm}]
+
+\titleformat{\chapter}[display]
+    {\chapternamestyle}
+    {%
+        \colorrule{ThirdAccent}{.3cm}\\[1ex]
+        \chaptertitlename\ \thechapter}
+    {-1.3ex}
+    {\chaptertitlestyle}
+    
+
+\titleformat{\section}[hang]
+{\sectionnumberstyle}{\thesection}{1em}{\sectiontitlestyle}
+\titleformat{\subsection}[hang]
+{\subsectionnumberstyle}{\thesubsection}{1em}{\sectiontitlestyle}
+\titleformat{\subsubsection}[hang]
+{\subsubsectionnumberstyle}{\thesubsubsection}{1em}{\sectiontitlestyle}
+    
+\titlespacing*{\chapter}{0pt}{0pt}{2\baselineskip}
+\titlespacing*{\part}{0pt}{0pt}{0pt}
+
+\renewcommand{\chaptermark}[1]{%
+    \markboth{\chaptername\ \thechapter.\ #1}{}
+}
+\renewcommand{\partmark}[1]{%
+    \markright{\parttitlename\ \thepart.\ \#1}
+}
+%%% /SECTIONS
+
+%%% META
+\makeatletter
+\newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}
+\newcommand*{\@subtitle}{}
+\newcommand*{\thesubtitle}{\@subtitle}
+\newcommand*{\thetitle}{\@title}
+\makeatother
+
+\makeatletter
+\renewcommand\maketitle{
+	\thispagestyle{empty}
+	\newgeometry{left=.66cm,right=.66cm,bottom=3cm,top=3cm}
+	\pagecolor{Accent}
+	\color{Yellow}
+	
+	{\begin{raggedright}\sffamily
+			\colorrule{White}{.8cm}\\[2.1ex]
+			{\gigantic\upshape\@author}\\[2.1ex] 
+			{\GIGANTIC\bfseries\@title}\\[1.3ex]
+			\vfill
+			\colorrule{White}{.5cm}\\[2.1ex]
+			{\huge\mdseries\@subtitle}
+	\end{raggedright}}
+	\clearpage
+	\thispagestyle{empty}
+	\restoregeometry
+    \nopagecolor
+    \pagecolor{White}
+	\color{Black}
+	\cleardoublepage
+} % Note the extra }
+\makeatother
+
+
+%%% /META
+
+%%% COMMANDS
+\newenvironment{halfbox}{%
+	\par\vskip\baselineskip
+	\noindent
+	\hspace*{.25\textwidth}
+	\begin{minipage}[t]{0.5\textwidth}\sffamily
+		\begin{framed}\centering
+		}{%
+		\end{framed}
+	\end{minipage}
+	\par\vskip2\baselineskip
+}
+
+%%% /COMMANDS
+
+%%% HEADER/FOOTER
+    \fancyheadinit{\normalfont\sffamily\small}
+    \fancyfootinit{\normalfont\sffamily\small}
+    \makeatletter
+    \def\headrule{{%
+        \color{Accent}%
+        \if@fancyplain\let\headrulewidth\plainheadrulewidth\fi
+        \hrule\@height\headrulewidth\@width\headwidth
+        \vskip-\headrulewidth}%
+    }%
+    \def\footrule{{%
+        \color{Accent}%
+        \if@fancyplain\let\footrulewidth\plainfootrulewidth\fi
+        \hrule\@width\headwidth\@height\footrulewidth}%
+    }%
+    \makeatother
+    
+    \fancypagestyle{fancyplain}{
+        \fancyhf{}
+        \renewcommand{\headrulewidth}{0}
+        \renewcommand{\footrulewidth}{0}
+    }
+    
+    \fancypagestyle{plain}[fancyplain]{
+        \renewcommand{\footrulewidth}{1pt}
+        \fancyfoot[L]{\doctitle}
+        \fancyfoot[C]{}
+        \fancyfoot[R]{\thepage}
+    }
+    \fancypagestyle{fancytoc}[fancyplain]{}
+
+    \fancypagestyle{fancynormal}[plain]{
+        \renewcommand{\headrulewidth}{1pt}
+        \fancyhead[L]{\parttitlename\ \thepart}
+        \fancyhead[C]{}
+        \fancyhead[R]{\nouppercase{\leftmark}}
+    }
+    \pagestyle{fancynormal}
+    \hypersetup{colorlinks=false, linktoc=all}
+    
+%%%
+
+
+\author{\docauthor}
+\title{\doctitle}
+\subtitle{\docsubtitle}
+\date{\the\year}
+\hypersetup{
+    pdfinfo={
+        Author=\docauthor,
+        Title=\doctitle,
+        Subject=\docsubtitle,
+        % ...
+    },
+    colorlinks=false,
+    linktoc=all,
+    colorlinks=true,
+    linkcolor=black,
+}
